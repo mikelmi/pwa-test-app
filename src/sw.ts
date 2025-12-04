@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 declare const self: ServiceWorkerGlobalScope;
 
-const BASE_URL = import.meta.env.BASE_URL || "/";
+const BASE_URL = "/pwa-test-app"; // "/"
 
 import { precacheAndRoute } from "workbox-precaching";
 
@@ -18,7 +18,7 @@ self.addEventListener("push", (event) => {
   // 1️⃣ Показуємо нативне повідомлення
   self.registration.showNotification(payload.title || "New message", {
     body: payload.body || payload.message,
-    data: payload.url || BASE_URL, // зберігаємо URL для click
+    data: BASE_URL, //payload.url || BASE_URL, // зберігаємо URL для click
   });
 
   // 2️⃣ Доставляємо повідомлення у всі відкриті вкладки React
