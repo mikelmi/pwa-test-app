@@ -1,9 +1,9 @@
 import { usePWAInstall } from "../hooks/usePWAInstall";
 
 export default function InstallPWAButton() {
-  const { isInstalled, isInstallable, installPWA } = usePWAInstall();
+  const { isInstalled /*, isInstallable */, installPWA } = usePWAInstall();
 
-  if (!isInstallable || isInstalled) {
+  if (/*!isInstallable || */ isInstalled) {
     return null;
   }
 

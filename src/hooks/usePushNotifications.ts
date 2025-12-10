@@ -35,9 +35,12 @@ export const usePushNotifications = (autoSubscribeEnable = true) => {
 
       const reg = await navigator.serviceWorker.ready;
 
-      let existing = await reg.pushManager.getSubscription();
+      let existing = reg?.pushManager
+        ? await reg.pushManager.getSubscription()
+        : undefined;
 
       if (existing) {
+        setStatus("try using existing");
         const existingKey = arrayBufferToBase64(
           existing.options.applicationServerKey as ArrayBuffer
         );
