@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function useGeolocationWatcher() {
+export function useGeolocationWatcher(intervalMs: number = 15000) {
   const [position, setPosition] = useState<GeolocationPosition | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -10,12 +10,20 @@ export function useGeolocationWatcher() {
       return;
     }
 
+    let lastUpdate = 0;
+
     const watchId = navigator.geolocation.watchPosition(
-      (pos) => setPosition(pos),
+      (pos) => {
+        const now = Date.now();
+        if (now - lastUpdate >= intervalMs) {
+          setPosition(pos);
+          lastUpdate = now;
+        }
+      },
       (err) => setError(err.message),
       {
         enableHighAccuracy: true,
-        maximumAge: 10000,
+        maximumAge: intervalMs, // кешування до інтервалу
         timeout: 20000,
       }
     );
@@ -23,7 +31,7 @@ export function useGeolocationWatcher() {
     return () => {
       navigator.geolocation.clearWatch(watchId);
     };
-  }, []);
+  }, [intervalMs]);
 
   return { position, error };
 }

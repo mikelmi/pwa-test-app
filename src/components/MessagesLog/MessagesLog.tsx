@@ -1,5 +1,7 @@
 import { usePushMessages } from "@/hooks";
 
+import "./MessagesLog.css";
+
 export default function MessagesLog() {
   const messages = usePushMessages();
 
@@ -7,13 +9,16 @@ export default function MessagesLog() {
     <div>
       <h3>Журнал повідомлень:</h3>
 
-      <ul>
+      <ul className="messages-log">
         {messages.map((msg, i) => (
           <li key={i}>
-            <pre>
-              Дата: {msg.date?.toLocaleDateString()}. Розташування:{" "}
-              {msg.location?.latitude}, {msg.location?.longitude}
-            </pre>
+            <div>
+              <b>Дата:</b> {msg.date?.toLocaleString()}
+            </div>
+            <div>
+              <b>Розташування:</b> {msg.location?.latitude},{" "}
+              {msg.location?.longitude}
+            </div>
           </li>
         ))}
       </ul>

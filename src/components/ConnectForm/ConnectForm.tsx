@@ -26,7 +26,7 @@ export default function ConnectForm() {
   if (isConnected) {
     return (
       <div>
-        UUID: {uuid}
+        <b>UUID:</b> {uuid}
         <button type="button" onClick={disconnect}>
           Від'єднатись
         </button>

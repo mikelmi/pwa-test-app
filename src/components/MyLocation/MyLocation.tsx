@@ -5,7 +5,7 @@ export default function MyLocation() {
 
   return (
     <div>
-      Місцезнаходження:{" "}
+      <b>Місцезнаходження:</b>{" "}
       {position && (
         <span>
           Широта: {position.coords.latitude}, Довгота:{" "}
