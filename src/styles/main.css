@@ -9,6 +9,8 @@
   --button-bg-color: #1a1a1a;
   --button-hover-bg: #646cff;
 
+  --card-bg-color: #344055;
+
   line-height: 1.5;
   color-scheme: light dark;
   color: var(--text-color);
@@ -29,6 +31,10 @@ body {
   justify-content: center;
   min-width: 320px;
   min-height: 100vh;
+}
+
+#root {
+  height: 100%;
 }
 
 a {
@@ -67,6 +73,8 @@ button:focus-visible {
     --link-color: #747bff;
     --button-bg-color: #ffffff;
     --button-border-color: #ccdeee;
+
+    --card-bg-color: #f0f4f8;
   }
 }
 

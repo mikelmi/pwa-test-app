@@ -4,10 +4,15 @@ import PWABadge from "./PWABadge";
 import InstallButton from "./InstallButton";
 import ConnectForm from "./ConnectForm";
 import MyLocation from "./MyLocation";
-import { NotificationsProvider, useNotificationsContext } from "@/context";
+import {
+  MapModalProvider,
+  NotificationsProvider,
+  useNotificationsContext,
+} from "@/context";
 import Loader from "./Loader";
 import MessagesLog from "./MessagesLog";
 import SOSButton from "./SOSButton";
+import MapModal from "./MapModal/MapModal";
 
 function App() {
   useThemeManager();
@@ -16,10 +21,12 @@ function App() {
     <>
       <PWABadge />
       <InstallButton />
-      <NotificationsProvider>
-        <ConnectForm />
-        <AppContent />
-      </NotificationsProvider>
+      <MapModalProvider>
+        <NotificationsProvider>
+          <ConnectForm />
+          <AppContent />
+        </NotificationsProvider>
+      </MapModalProvider>
     </>
   );
 }
@@ -44,6 +51,7 @@ function AppContent() {
       <MyLocation />
       <SOSButton />
       <MessagesLog />
+      <MapModal />
     </>
   );
 }

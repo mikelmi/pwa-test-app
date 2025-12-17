@@ -1,9 +1,12 @@
+import { useMapModalContext } from "@/context";
 import { isSOSMessage } from "@/services/helpers";
 import type { SOSMessage } from "@/types";
 import { useEffect, useState } from "react";
 
 export function usePushMessages() {
   const [messages, setMessages] = useState<SOSMessage[]>([]);
+
+  const { openModal } = useMapModalContext();
 
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return;
@@ -28,6 +31,7 @@ export function usePushMessages() {
 
       if (event.data?.type === "NOTIFICATION_CLICK") {
         setMessages((prev) => [...prev, { ...enriched, clicked: true }]);
+        openModal(payload);
       }
     };
 

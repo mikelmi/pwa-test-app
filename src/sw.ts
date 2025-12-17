@@ -36,7 +36,7 @@ self.addEventListener("notificationclick", (event) => {
   event.notification.close();
 
   const payload = event.notification.data;
-  let targetUrl = `${BASE_URL}`;
+  let targetUrl = `${BASE_URL}/map`;
 
   if (isSOSMessage(payload)) {
     const { latitude, longitude } = payload.location;
