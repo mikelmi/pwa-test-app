@@ -4,6 +4,7 @@ declare const self: ServiceWorkerGlobalScope;
 const BASE_URL = "/pwa-test-app"; // "/"
 
 import { precacheAndRoute } from "workbox-precaching";
+import { isSOSMessage } from "./services/helpers";
 
 precacheAndRoute(self.__WB_MANIFEST);
 
@@ -37,7 +38,7 @@ self.addEventListener("notificationclick", (event) => {
   const payload = event.notification.data;
   let targetUrl = `${BASE_URL}/map`;
 
-  if (payload?.location) {
+  if (isSOSMessage(payload)) {
     const { latitude, longitude } = payload.location;
     targetUrl += `?latitude=${latitude}&longitude=${longitude}`;
   }

@@ -9,7 +9,12 @@ export default function MessagesLog() {
 
       <ul>
         {messages.map((msg, i) => (
-          <li key={i}>{JSON.stringify(msg)}</li>
+          <li key={i}>
+            <pre>
+              Дата: {msg.date?.toLocaleDateString()}. Розташування:{" "}
+              {msg.location?.latitude}, {msg.location?.longitude}
+            </pre>
+          </li>
         ))}
       </ul>
     </div>

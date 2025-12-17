@@ -1,3 +1,4 @@
+import type { SOSMessage } from "@/types";
 import { Config } from "../config";
 
 function subscribe(sub: PushSubscription, uuid?: string | null) {
@@ -30,9 +31,16 @@ function notifyAll(message?: string | object) {
   });
 }
 
-async function notifyAllMyLocation() {
+async function notifyAllMyLocation(uuid: string) {
   const location = await getMyLocation();
-  return await notifyAll({ location: location.coords });
+
+  const message: SOSMessage = {
+    uuid,
+    location: location.coords,
+    timestamp: new Date().getTime(),
+  };
+
+  return await notifyAll(message);
 }
 
 async function getMyLocation(): Promise<GeolocationPosition> {
