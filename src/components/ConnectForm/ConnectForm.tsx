@@ -65,7 +65,7 @@ export default function ConnectForm() {
         <button type="submit" disabled={disabled}>
           Під'єднатись
         </button>
-        {isLoading && <Loader />}
+        {isLoading && <Loader size={14} />}
       </div>
       {error && <div className="error">{error}</div>}
     </form>
