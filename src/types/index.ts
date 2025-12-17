@@ -8,4 +8,5 @@ export interface SOSMessage {
   location: LocationPosition;
   timestamp: number;
   date?: Date;
+  clicked?: boolean;
 }

@@ -9,20 +9,25 @@ export function usePushMessages() {
     if (!("serviceWorker" in navigator)) return;
 
     const handler = (event: MessageEvent) => {
-      if (!isSOSMessage(event.data.payload)) {
+      const payload = event.data?.payload?.body || event.data?.payload;
+
+      console.log("message handler", { payload, event });
+
+      if (!isSOSMessage(payload)) {
         return;
       }
 
-      const payload: SOSMessage = event.data.payload;
-
-      payload.date = new Date(payload.timestamp);
+      const enriched: SOSMessage = {
+        ...payload,
+        date: new Date(payload.timestamp),
+      };
 
       if (event.data?.type === "PUSH_MESSAGE") {
-        setMessages((prev) => [...prev, payload]);
+        setMessages((prev) => [...prev, enriched]);
       }
 
       if (event.data?.type === "NOTIFICATION_CLICK") {
-        setMessages((prev) => [...prev, { clicked: true, ...payload }]);
+        setMessages((prev) => [...prev, { ...enriched, clicked: true }]);
       }
     };
 
