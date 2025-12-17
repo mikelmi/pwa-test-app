@@ -11,7 +11,7 @@ export function usePushMessages() {
     const handler = (event: MessageEvent) => {
       const payload = event.data?.payload?.body || event.data?.payload;
 
-      console.log("message handler", { payload, event });
+      console.debug("message handler", { payload, event });
 
       if (!isSOSMessage(payload)) {
         return;
