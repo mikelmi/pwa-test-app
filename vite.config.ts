@@ -1,10 +1,16 @@
 import { VitePWA } from "vite-plugin-pwa";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "pwa-test-app",
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
   plugins: [
     react(),
     VitePWA({
@@ -22,10 +28,13 @@ export default defineConfig({
       },
 
       manifest: {
-        name: "pwa-test-app",
-        short_name: "pwa-test-app",
-        description: "pwa-test-app",
-        theme_color: "#ffffff",
+        name: "PWA SOS App",
+        short_name: "pwa-sos-app",
+        description: "pwa-sos-app",
+        theme_color: "#2b3544",
+        background_color: "#2b3544",
+        display: "standalone",
+        orientation: "portrait",
       },
 
       workbox: {

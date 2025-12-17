@@ -58,7 +58,10 @@ export function usePWAInstall() {
 
   // Виклик системного діалогу установки
   const installPWA = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      alert("Cannot install PWA");
+      return;
+    }
 
     deferredPrompt.prompt();
 

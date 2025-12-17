@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { Config } from "../config";
 import apiClient from "../services/apiClient";
 
-export const usePushNotifications = (autoSubscribeEnable = true) => {
+export const usePushNotifications = (autoSubscribeEnable = false) => {
   const [isSupported, setIsSupported] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const [subscription, setSubscription] = useState<PushSubscription | null>(
     null
   );
   const [error, setError] = useState<string | null>(null);
-  const [status, setStatus] = useState<string>("idle");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const supported =
@@ -29,9 +29,10 @@ export const usePushNotifications = (autoSubscribeEnable = true) => {
     subscribe();
   }, [isSupported, autoSubscribeEnable]);
 
-  const subscribe = async () => {
+  const subscribe = async (uuid?: string | null) => {
     try {
-      setStatus("checking");
+      setIsLoading(true);
+      setError(null);
 
       const reg = await navigator.serviceWorker.ready;
 
@@ -40,7 +41,6 @@ export const usePushNotifications = (autoSubscribeEnable = true) => {
         : undefined;
 
       if (existing) {
-        setStatus("try using existing");
         const existingKey = arrayBufferToBase64(
           existing.options.applicationServerKey as ArrayBuffer
         );
@@ -52,26 +52,51 @@ export const usePushNotifications = (autoSubscribeEnable = true) => {
       }
 
       if (!existing) {
-        setStatus("subscribing");
-
         existing = await reg.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: Config.vapidKey,
         });
       }
 
-      setStatus("saving");
-      await apiClient.subscribe(existing);
+      await apiClient.subscribe(existing, uuid);
 
       setSubscription(existing);
-      setSubscribed(true);
-      setStatus("ready");
+      setIsSubscribed(true);
     } catch (error) {
       const err = error as Error;
 
       console.error("Push subscribe error:", err);
       setError(err.message);
-      setStatus("error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const unsubscribe = async (uuid?: string | null) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const reg = await navigator.serviceWorker.ready;
+
+      const existing = reg?.pushManager
+        ? await reg.pushManager.getSubscription()
+        : undefined;
+
+      if (existing) {
+        await existing.unsubscribe();
+        await apiClient.unsubscribe(existing, uuid);
+      }
+
+      setSubscription(null);
+      setIsSubscribed(false);
+    } catch (error) {
+      const err = error as Error;
+
+      console.error("Push unsubscribe error:", err);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -82,11 +107,11 @@ export const usePushNotifications = (autoSubscribeEnable = true) => {
 
   return {
     isSupported,
-    subscribed,
+    isSubscribed,
     subscription,
     subscribe,
+    unsubscribe,
     error,
-    status,
-    notifyAlll: apiClient.notifyAll,
+    isLoading,
   };
 };
