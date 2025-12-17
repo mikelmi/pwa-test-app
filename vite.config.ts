@@ -28,9 +28,9 @@ export default defineConfig({
       },
 
       manifest: {
-        name: "PWA SOS App",
-        short_name: "pwa-sos-app",
-        description: "pwa-sos-app",
+        name: "pwa-test-app",
+        short_name: "pwa-test-app",
+        description: "pwa-test-app",
         theme_color: "#2b3544",
         background_color: "#2b3544",
         display: "standalone",
