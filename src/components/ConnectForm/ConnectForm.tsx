@@ -19,13 +19,15 @@ export default function ConnectForm() {
 
   if (!isSupported) {
     return (
-      <div className="error">Неможливо підключитись. Встановіть додаток</div>
+      <div className="error block">
+        Неможливо підключитись. Встановіть додаток
+      </div>
     );
   }
 
   if (isConnected) {
     return (
-      <div>
+      <div className="block">
         <b>UUID:</b> {uuid}
         <button type="button" onClick={disconnect}>
           Від'єднатись
@@ -50,7 +52,7 @@ export default function ConnectForm() {
   const disabled = isLoading || !uuidValue.trim();
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form onSubmit={handleFormSubmit} className="block">
       <div className="field">
         <input
           name="UUID"
@@ -65,7 +67,7 @@ export default function ConnectForm() {
         <button type="submit" disabled={disabled}>
           Під'єднатись
         </button>
-        {isLoading && <Loader size={14} />}
+        {isLoading && <Loader size={12} />}
       </div>
       {error && <div className="error">{error}</div>}
     </form>

@@ -34,7 +34,11 @@ export const usePushNotifications = (autoSubscribeEnable = false) => {
       setIsLoading(true);
       setError(null);
 
-      const reg = await navigator.serviceWorker.ready;
+      const reg = await navigator.serviceWorker.getRegistration(Config.baseUrl);
+
+      if (!reg) {
+        throw new Error("Service worker не зареєстрований!");
+      }
 
       let existing = reg?.pushManager
         ? await reg.pushManager.getSubscription()

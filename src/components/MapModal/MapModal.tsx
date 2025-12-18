@@ -15,10 +15,16 @@ export default function MapModal() {
     selectedMessage.location.longitude,
   ];
 
+  const openInMaps = () => {
+    const url = `https://www.google.com/maps?q=${selectedMessage.location.latitude},${selectedMessage.location.longitude}`;
+    window.open(url, "_blank");
+  };
+
   return (
     <div className="modal-overlay" onClick={closeModal}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
+          <button onClick={openInMaps}>Відкрити в Google Maps</button>
           <button onClick={closeModal}>Закрити</button>
         </div>
 

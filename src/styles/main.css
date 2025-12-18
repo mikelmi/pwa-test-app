@@ -57,12 +57,29 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: var(--button-hover-bg);
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.error {
+  color: red;
+}
+
+.block {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
 @media (prefers-color-scheme: light) {
@@ -76,8 +93,4 @@ button:focus-visible {
 
     --card-bg-color: #f0f4f8;
   }
-}
-
-.error {
-  color: red;
 }

@@ -1,3 +1,9 @@
+.locader-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .loader {
   width: var(--loader-width, 50px);
   padding: 8px;

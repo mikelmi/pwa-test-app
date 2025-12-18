@@ -13,10 +13,17 @@ self.addEventListener("fetch", () => {});
 self.addEventListener("push", (event) => {
   console.log("[SW] PUSH:", event.data?.text());
 
-  const payload = event.data?.json?.() || { message: event.data?.text() };
+  const payload = event.data?.json?.() || { body: event.data?.text() };
 
-  self.registration.showNotification(payload.title || "New message", {
-    body: payload.body || payload.message,
+  const message = payload?.body;
+
+  if (!isSOSMessage(message)) {
+    console.log("!SOS message", message);
+    return;
+  }
+
+  self.registration.showNotification("SOS", {
+    body: `Місцезнаходження: ${message.location.latitude},${message.location.longitude}`,
     data: payload,
   });
 
@@ -36,7 +43,7 @@ self.addEventListener("notificationclick", (event) => {
   event.notification.close();
 
   const payload = event.notification.data;
-  let targetUrl = `${BASE_URL}/map`;
+  let targetUrl = `${BASE_URL}`;
 
   if (isSOSMessage(payload)) {
     const { latitude, longitude } = payload.location;

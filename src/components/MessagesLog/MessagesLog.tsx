@@ -9,7 +9,7 @@ export default function MessagesLog() {
   const { openModal } = useMapModalContext();
 
   return (
-    <div>
+    <div className="block">
       <h3>Журнал повідомлень:</h3>
 
       <ul className="messages-log">

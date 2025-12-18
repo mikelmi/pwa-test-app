@@ -13,6 +13,7 @@ import Loader from "./Loader";
 import MessagesLog from "./MessagesLog";
 import SOSButton from "./SOSButton";
 import MapModal from "./MapModal/MapModal";
+import RefreshButton from "./RefreshButton/RefreshButton";
 
 function App() {
   useThemeManager();
@@ -20,7 +21,9 @@ function App() {
   return (
     <>
       <PWABadge />
-      <InstallButton />
+      <div>
+        <InstallButton /> <RefreshButton />
+      </div>
       <MapModalProvider>
         <NotificationsProvider>
           <ConnectForm />
