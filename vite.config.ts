@@ -2,7 +2,7 @@ import { VitePWA } from "vite-plugin-pwa";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
-import { readFileSync } from "fs";
+//import { readFileSync } from "fs";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,7 +12,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server: {
+  /*server: {
     host: true,
     port: 5173,
     https: {
@@ -21,7 +21,7 @@ export default defineConfig({
       key: readFileSync("certs/192.168.31.58-key.pem"),
       cert: readFileSync("certs/192.168.31.58.pem"),
     },
-  },
+  },*/
   plugins: [
     react(),
     VitePWA({
