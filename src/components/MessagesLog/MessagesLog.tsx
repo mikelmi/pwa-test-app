@@ -20,6 +20,9 @@ export default function MessagesLog() {
             style={{ cursor: "pointer" }}
           >
             <div>
+              <b>UUID:</b> {msg.uuid}
+            </div>
+            <div>
               <b>Дата:</b> {msg.date?.toLocaleString()}
             </div>
             <div>

@@ -1,9 +1,30 @@
+import apiClient from "@/services/apiClient";
 import { isSOSMessage } from "@/services/helpers";
 import type { SOSMessage } from "@/types";
 import { useEffect, useState } from "react";
 
+function prepareMessages(mesages: SOSMessage[]): SOSMessage[] {
+  return mesages.sort((a, b) => b.timestamp - a.timestamp).slice(0, 10);
+}
+
 export function usePushMessages() {
   const [messages, setMessages] = useState<SOSMessage[]>([]);
+
+  useEffect(() => {
+    const loadLastMessages = async () => {
+      try {
+        const lastMessages = await apiClient.getLastMessages();
+
+        if (lastMessages?.length) {
+          setMessages(prepareMessages(lastMessages));
+        }
+      } catch {
+        console.debug("Cannot load las messages");
+      }
+    };
+
+    loadLastMessages();
+  }, []);
 
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return;
@@ -17,13 +38,13 @@ export function usePushMessages() {
         return;
       }
 
-      const enriched: SOSMessage = {
+      const newMessage: SOSMessage = {
         ...payload,
         date: new Date(payload.timestamp),
       };
 
       if (event.data?.type === "PUSH_MESSAGE") {
-        setMessages((prev) => [...prev, enriched]);
+        setMessages((prev) => prepareMessages([...prev, newMessage]));
       }
     };
 

@@ -30,10 +30,22 @@ function notifyAll(message?: string | object) {
   });
 }
 
+async function getLastMessages() {
+  console.debug("api:getLastMessages");
+
+  const response = await fetch(`${Config.apiUrl}/messages`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  return await response.json();
+}
+
 const apiClient = {
   subscribe,
   unsubscribe,
   notifyAll,
+  getLastMessages,
 };
 
 export default apiClient;
