@@ -1,7 +1,6 @@
 import { useThemeManager } from "@/hooks";
 
 import PWABadge from "./PWABadge";
-import InstallButton from "./InstallButton";
 import ConnectForm from "./ConnectForm";
 import MyLocation from "./MyLocation";
 import {
