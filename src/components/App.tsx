@@ -29,6 +29,8 @@ function App() {
           <ConnectForm />
           <AppContent />
         </NotificationsProvider>
+
+        <MapModal />
       </MapModalProvider>
     </>
   );
@@ -54,7 +56,6 @@ function AppContent() {
       <MyLocation />
       <SOSButton />
       <MessagesLog />
-      <MapModal />
     </>
   );
 }
