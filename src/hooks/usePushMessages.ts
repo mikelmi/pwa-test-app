@@ -3,10 +3,6 @@ import { isSOSMessage } from "@/services/helpers";
 import type { SOSMessage } from "@/types";
 import { useEffect, useState } from "react";
 
-function prepareMessages(mesages: SOSMessage[]): SOSMessage[] {
-  return mesages.sort((a, b) => b.timestamp - a.timestamp).slice(0, 10);
-}
-
 export function usePushMessages() {
   const [messages, setMessages] = useState<SOSMessage[]>([]);
 
@@ -16,7 +12,7 @@ export function usePushMessages() {
         const lastMessages = await apiClient.getLastMessages();
 
         if (lastMessages?.length) {
-          setMessages(prepareMessages(lastMessages));
+          setMessages(prepareMessagesFromApi(lastMessages));
         }
       } catch {
         console.debug("Cannot load las messages");
@@ -38,10 +34,7 @@ export function usePushMessages() {
         return;
       }
 
-      const newMessage: SOSMessage = {
-        ...payload,
-        date: new Date(payload.timestamp),
-      };
+      const newMessage = mapMessage(payload);
 
       if (event.data?.type === "PUSH_MESSAGE") {
         setMessages((prev) => prepareMessages([...prev, newMessage]));
@@ -56,4 +49,22 @@ export function usePushMessages() {
   }, []);
 
   return messages;
+}
+
+function prepareMessages(mesages: SOSMessage[]): SOSMessage[] {
+  return mesages.sort((a, b) => b.timestamp - a.timestamp).slice(0, 10);
+}
+
+function prepareMessagesFromApi(mesages: SOSMessage[]): SOSMessage[] {
+  return prepareMessages(
+    mesages.filter((msg) => isSOSMessage(msg)).map(mapMessage)
+  );
+}
+
+function mapMessage(msg: SOSMessage): SOSMessage {
+  if (msg.date) {
+    return msg;
+  }
+
+  return { ...msg, date: new Date(msg.timestamp) };
 }
