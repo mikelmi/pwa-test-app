@@ -1,9 +1,13 @@
 import { createContext } from "react";
-import type { SOSMessage } from "@/types";
+import type { LocationPosition } from "@/types";
 
+export type MapModel = {
+  uuid?: string | null;
+  location: LocationPosition;
+};
 export interface MapModalContextType {
-  selectedMessage: SOSMessage | null;
-  openModal: (msg: SOSMessage) => void;
+  model: MapModel | null;
+  openModal: (model: MapModel) => void;
   closeModal: () => void;
 }
 

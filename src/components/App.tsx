@@ -22,7 +22,7 @@ function App() {
     <>
       <PWABadge />
       <div>
-        <InstallButton /> <RefreshButton />
+        <RefreshButton />
       </div>
       <MapModalProvider>
         <NotificationsProvider>

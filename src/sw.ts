@@ -43,11 +43,12 @@ self.addEventListener("notificationclick", (event) => {
   event.notification.close();
 
   const payload = event.notification.data;
-  let targetUrl = `${BASE_URL}`;
+  const targetUrl = `${BASE_URL}`;
+  let targetLocationUrl = targetUrl;
 
   if (isSOSMessage(payload)) {
     const { latitude, longitude } = payload.location;
-    targetUrl += `?latitude=${latitude}&longitude=${longitude}`;
+    targetLocationUrl += `?latitude=${latitude}&longitude=${longitude}&uuid=${payload.uuid}`;
   }
 
   event.waitUntil(
@@ -66,9 +67,7 @@ self.addEventListener("notificationclick", (event) => {
           }
         }
         if (self.clients.openWindow) {
-          self.clients.openWindow(targetUrl).then((win) => {
-            win?.postMessage({ type: "NOTIFICATION_CLICK", payload });
-          });
+          self.clients.openWindow(targetLocationUrl);
         }
       })
   );

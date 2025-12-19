@@ -1,22 +1,19 @@
-import type { SOSMessage } from "@/types";
 import { useState } from "react";
-import { MapModalContext } from "./mapModel.context";
+import { MapModalContext, type MapModel } from "./mapModel.context";
 
 export default function MapModalProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [selectedMessage, setSelectedMessage] = useState<SOSMessage | null>(
-    null
-  );
+  const [model, setMapModel] = useState<MapModel | null>(null);
 
   return (
     <MapModalContext.Provider
       value={{
-        selectedMessage,
-        openModal: (msg) => setSelectedMessage(msg),
-        closeModal: () => setSelectedMessage(null),
+        model,
+        openModal: (newModel) => setMapModel(newModel),
+        closeModal: () => setMapModel(null),
       }}
     >
       {children}

@@ -4,19 +4,22 @@ import { useMapModalContext } from "@/context";
 import "leaflet/dist/leaflet.css";
 import "./MapModal.css";
 import type { LatLngExpression } from "leaflet";
+import { useNotificationClickListener } from "@/hooks";
 
 export default function MapModal() {
-  const { selectedMessage, closeModal } = useMapModalContext();
+  useNotificationClickListener();
 
-  if (!selectedMessage) return null;
+  const { model, closeModal } = useMapModalContext();
+
+  if (!model) return null;
 
   const position: LatLngExpression = [
-    selectedMessage.location.latitude,
-    selectedMessage.location.longitude,
+    model.location.latitude,
+    model.location.longitude,
   ];
 
   const openInMaps = () => {
-    const url = `https://www.google.com/maps?q=${selectedMessage.location.latitude},${selectedMessage.location.longitude}`;
+    const url = `https://www.google.com/maps?q=${model.location.latitude},${model.location.longitude}`;
     window.open(url, "_blank");
   };
 
