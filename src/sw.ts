@@ -34,6 +34,8 @@ self.addEventListener("push", (event) => {
         await self.registration.showNotification("SOS", {
           body: `Місцезнаходження: ${message.location.latitude},${message.location.longitude}`,
           data: payload,
+          icon: `${BASE_URL}/icons/icon.png`,
+          badge: `${BASE_URL}/icons/badge.png`,
         });
         console.log("[SW] Notification shown");
       } catch (e) {
