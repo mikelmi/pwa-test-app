@@ -28,8 +28,6 @@ export function usePushMessages() {
     const handler = (event: MessageEvent) => {
       const payload = event.data?.payload?.body || event.data?.payload;
 
-      console.debug("message handler", { payload, event });
-
       if (!isSOSMessage(payload)) {
         return;
       }

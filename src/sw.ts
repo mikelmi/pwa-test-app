@@ -15,7 +15,7 @@ self.addEventListener("push", (event) => {
 
   const payload = event.data?.json?.() || { body: event.data?.text() };
 
-  const message = payload?.body;
+  const message = payload?.body || payload;
 
   if (!isSOSMessage(message)) {
     console.log("!SOS message", message);
@@ -43,12 +43,16 @@ self.addEventListener("notificationclick", (event) => {
   event.notification.close();
 
   const payload = event.notification.data;
+  const message = payload?.body || payload;
+
   let targetUrl = `${BASE_URL}`;
 
-  if (isSOSMessage(payload)) {
-    const { latitude, longitude } = payload.location;
-    targetUrl += `?latitude=${latitude}&longitude=${longitude}&uuid=${payload.uuid}`;
+  if (isSOSMessage(message)) {
+    const { latitude, longitude } = message.location;
+    targetUrl += `?latitude=${latitude}&longitude=${longitude}&uuid=${message.uuid}`;
   }
+
+  console.log("NOTIFICATION CLICK", { targetUrl, payload });
 
   event.waitUntil(
     self.clients

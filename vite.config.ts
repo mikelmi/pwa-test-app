@@ -1,18 +1,11 @@
 import { VitePWA } from "vite-plugin-pwa";
-import { defineConfig } from "vite";
+import { defineConfig, type ServerOptions } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
-//import { readFileSync } from "fs";
+import { readFileSync } from "fs";
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  base: "pwa-test-app",
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-  /*server: {
+function getPreviewServerConfig(): ServerOptions {
+  return {
     host: true,
     port: 5173,
     https: {
@@ -21,7 +14,18 @@ export default defineConfig({
       key: readFileSync("certs/192.168.31.58-key.pem"),
       cert: readFileSync("certs/192.168.31.58.pem"),
     },
-  },*/
+  };
+}
+
+// https://vitejs.dev/config/
+export default defineConfig(({ mode }) => ({
+  base: "pwa-test-app",
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  server: mode === "preview" ? getPreviewServerConfig() : undefined,
   plugins: [
     react(),
     VitePWA({
@@ -62,4 +66,4 @@ export default defineConfig({
       },
     }),
   ],
-});
+}));

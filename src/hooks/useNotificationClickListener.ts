@@ -25,16 +25,14 @@ export function useNotificationClickListener() {
     if (!("serviceWorker" in navigator)) return;
 
     const handler = (event: MessageEvent) => {
-      const payload = event.data?.payload?.body || event.data?.payload;
-
-      console.debug("notficiation click listener", { payload, event });
+      const payload =
+        event.data?.payload?.body || event.data?.payload || event.data;
 
       if (!isSOSMessage(payload)) {
         return;
       }
 
       if (event.data?.type === "NOTIFICATION_CLICK") {
-        console.debug("open map modal");
         openModal(payload);
       }
     };
