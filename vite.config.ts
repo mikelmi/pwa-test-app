@@ -14,6 +14,13 @@ function getPreviewServerConfig(): ServerOptions {
       key: readFileSync("certs/192.168.31.58-key.pem"),
       cert: readFileSync("certs/192.168.31.58.pem"),
     },
+
+    proxy: {
+      "/api": {
+        target: "http://192.168.31.58:4000",
+        changeOrigin: true,
+      },
+    },
   };
 }
 

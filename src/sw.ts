@@ -15,6 +15,8 @@ self.addEventListener("push", (event) => {
 
   const payload = event.data?.json?.() || { body: event.data?.text() };
 
+  console.log("SW] PUSH PAYLOAD:", payload);
+
   const message = payload?.body || payload;
 
   if (!isSOSMessage(message)) {
@@ -22,20 +24,30 @@ self.addEventListener("push", (event) => {
     return;
   }
 
-  self.registration.showNotification("SOS", {
-    body: `Місцезнаходження: ${message.location.latitude},${message.location.longitude}`,
-    data: payload,
-  });
+  console.log(
+    `Show notification ${message.location.latitude},${message.location.longitude}`
+  );
 
   event.waitUntil(
-    self.clients.matchAll({ includeUncontrolled: true }).then((clients) => {
-      for (const client of clients) {
-        client.postMessage({
-          type: "PUSH_MESSAGE",
-          payload,
+    (async () => {
+      try {
+        await self.registration.showNotification("SOS", {
+          body: `Місцезнаходження: ${message.location.latitude},${message.location.longitude}`,
+          data: payload,
         });
+        console.log("[SW] Notification shown");
+      } catch (e) {
+        console.error("[SW] showNotification error:", e);
       }
-    })
+
+      const clients = await self.clients.matchAll({
+        includeUncontrolled: true,
+      });
+
+      for (const client of clients) {
+        client.postMessage({ type: "PUSH_MESSAGE", payload });
+      }
+    })()
   );
 });
 
